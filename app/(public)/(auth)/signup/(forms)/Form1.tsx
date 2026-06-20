@@ -14,7 +14,7 @@ const Form1 = ({
   const {
     register,
     handleSubmit,
-    watch,
+
     setValue,
     formState: { errors, isValid },
   } = useForm<Form1DataType>({
@@ -26,10 +26,9 @@ const Form1 = ({
       email: "",
       phone: "",
       profileImg: "", //URL
+      bio: "",
     },
   });
-
-  console.log("data: ", watch());
 
   const onSubmit = (data: Form1DataType) => {
     console.log("Form Data:", data);
@@ -62,12 +61,12 @@ const Form1 = ({
       </fieldset>
 
       <div className="flex justify-between">
-        <fieldset className="grid gap-2 ">
+        <fieldset className="grid gap-2   ">
           <label htmlFor="age">Age</label>
           <input
             type="text"
             {...register("age")}
-            className="border rounded-md p-2 text-md"
+            className="border rounded-md p-2 text-md w-3/5"
             placeholder="18+"
           />
 
@@ -99,10 +98,22 @@ const Form1 = ({
         {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
       </fieldset>
 
+      <fieldset className="grid gap-2">
+        <label htmlFor="bio">Bio</label>
+        <textarea
+          rows={7}
+          {...register("bio")}
+          className="border rounded-md p-2 text-md"
+          placeholder="Tell us about yourself"
+        />
+        {errors.bio && <p className="text-red-500">{errors.bio.message}</p>}
+      </fieldset>
+
       <div>
         <button
-          type="submit"
-          disabled={!isValid}
+          // type="submit"
+          onClick={() => setActiveStep(2)}
+          // disabled={!isValid}
           className="border w-fit px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed enabled:cursor-pointer transition-colors"
         >
           Next

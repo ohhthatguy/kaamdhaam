@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { LuUpload } from "react-icons/lu";
 
 const ProfileImageInput = ({
   UrlFromProfileImgInputComp,
@@ -65,11 +66,11 @@ const ProfileImageInput = ({
 
   return (
     /* FIX 1: Change items-center to items-stretch on the parent so children can actually use w-full */
-    <div className="flex flex-col items-stretch gap-4 w-3/5  ">
+    <div className="flex flex-col items-stretch gap-4 w-3/5   ">
       <label
         className={`
-        relative flex flex-col items-center justify-center w-full h-40
-        border border-gray-50 rounded-xl cursor-pointer 
+        relative flex flex-col items-center justify-center w-full h-30 xs:h-40
+        border border-gray-300 rounded-xl cursor-pointer 
        hover:bg-gray-100 transition-all duration-200 group
         ${uploading ? "opacity-50 pointer-events-none" : ""}
       `}
@@ -98,15 +99,15 @@ const ProfileImageInput = ({
         ) : (
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <div className="p-3 mb-3 bg-blue-50 rounded-full text-blue-500 group-hover:bg-blue-100 transition-colors duration-200">
-              {/* Logo placeholder */}
+              <LuUpload />
             </div>
 
             {/* FIX 2: Changed from <p> to <div> because a <p> tag cannot legally contain another nested <p> tag in HTML */}
             <div className="mb-1 text-sm text-gray-700 font-semibold text-center">
-              <span>Click to upload profile photo</span>
+              <span className="text-muted-text"> Upload Profile Photo</span>
               {uploading && (
                 <p className="text-sm text-blue-500 mt-1 animate-pulse">
-                  Uploading to Cloudflare...
+                  Uploading...
                 </p>
               )}
             </div>

@@ -22,6 +22,10 @@ export const Form1Schema = z.object({
   phone: z.string().regex(/^(98|97)\d{8}$/, "Enter valid Nepali phone number"),
 
   profileImg: z.string("Profile image is required"),
+  bio: z
+    .string()
+    .min(2, "bio must be at least 2 characters")
+    .max(150, "bio is should be short than 150 characters"),
 });
 
 export type Form1DataType = z.infer<typeof Form1Schema>;
