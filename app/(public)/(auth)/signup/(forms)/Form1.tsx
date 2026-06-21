@@ -6,11 +6,19 @@ import { useForm } from "react-hook-form";
 import type { Form1DataType } from "../../../../../lib/zod-schema/signup-schema/Form1-schema";
 import { Form1Schema } from "../../../../../lib/zod-schema/signup-schema/Form1-schema";
 
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux-hooks";
+import { updateIntroForm } from "@/lib/slice/signupForm/signupFormSlice";
+
 const Form1 = ({
   setActiveStep,
 }: {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }) => {
+  const dispatch = useAppDispatch();
+  const { skill, password, ...restOfFormData } = useAppSelector(
+    (state) => state.signUpForm,
+  );
+
   const {
     register,
     handleSubmit,
@@ -20,18 +28,12 @@ const Form1 = ({
   } = useForm<Form1DataType>({
     resolver: zodResolver(Form1Schema),
     mode: "onChange",
-    defaultValues: {
-      name: "",
-      age: "18",
-      email: "",
-      phone: "",
-      profileImg: "", //URL
-      bio: "",
-    },
+    defaultValues: restOfFormData,
   });
 
   const onSubmit = (data: Form1DataType) => {
     console.log("Form Data:", data);
+    dispatch(updateIntroForm(data));
     setActiveStep(2);
   };
 
@@ -111,9 +113,9 @@ const Form1 = ({
 
       <div>
         <button
-          // type="submit"
-          onClick={() => setActiveStep(2)}
-          // disabled={!isValid}
+          type="submit"
+          // onClick={() => setActiveStep(2)}
+          disabled={!isValid}
           className="border w-fit px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed enabled:cursor-pointer transition-colors"
         >
           Next

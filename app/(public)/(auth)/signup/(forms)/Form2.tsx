@@ -9,18 +9,24 @@ import { skillOption } from "./data";
 import type { skillOptionDataType } from "./type";
 const animatedComponents = makeAnimated();
 
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux-hooks";
+import { updateSkillRateForm } from "@/lib/slice/signupForm/signupFormSlice";
+
 const Form2 = ({
   setActiveStep,
 }: {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [selectedOption, setSelectedOption] = useState<
-    MultiValue<skillOptionDataType>
-  >([]);
+  const dispatch = useAppDispatch();
+  const { skill, ...restOfData } = useAppSelector((state) => state.signUpForm);
 
+  const [selectedOption, setSelectedOption] =
+    useState<MultiValue<skillOptionDataType>>(skill);
+  console.log(selectedOption);
   const checkDisableBtn = () => {
     const k = selectedOption.every((e) => e.rate !== "");
     if (k) {
+      dispatch(updateSkillRateForm([...selectedOption]));
       setActiveStep(3);
     } else {
       toast.error("Please Enter All Field");
@@ -58,6 +64,7 @@ const Form2 = ({
                     required
                     className="border rounded-md w-2/5 p-2 pl-4 text-xs  "
                     placeholder="10"
+                    value={selectedOption[index].rate}
                     max={999}
                     onChange={(ele) =>
                       setSelectedOption((prev) =>
@@ -73,6 +80,7 @@ const Form2 = ({
 
                   <select
                     className="border rounded-md p-2 text-xs w-3/5"
+                    value={selectedOption[index].rateType}
                     onChange={(ele) =>
                       setSelectedOption((prev) =>
                         prev.map((item, idx) =>

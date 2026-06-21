@@ -1,4 +1,6 @@
 import ToastProvider from "@/lib/component/ToastProvider";
+import StoreProvider from "../StoreProvider";
+
 import type { Metadata } from "next";
 import { Montserrat, Outfit } from "next/font/google";
 import "./globals.css";
@@ -31,7 +33,9 @@ export default function RootLayout({
       className={`${montserrat.variable} ${outfit.variable} h-full antialiased`}
     >
       <body className="min-h-full  scrollbar-custom text-unmuted-text flex flex-col font-body ">
-        <ToastProvider>{children}</ToastProvider>
+        <StoreProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </StoreProvider>
       </body>
     </html>
   );

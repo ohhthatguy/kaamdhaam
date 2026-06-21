@@ -21,7 +21,7 @@ export const Form1Schema = z.object({
 
   phone: z.string().regex(/^(98|97)\d{8}$/, "Enter valid Nepali phone number"),
 
-  profileImg: z.string("Profile image is required"),
+  profileImg: z.string().min(1, "Profile image is required"),
   bio: z
     .string()
     .min(2, "bio must be at least 2 characters")
