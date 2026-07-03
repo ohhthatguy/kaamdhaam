@@ -65,7 +65,6 @@ const ProfileImageInput = ({
   //   };
 
   return (
-    /* FIX 1: Change items-center to items-stretch on the parent so children can actually use w-full */
     <div className="flex flex-col items-stretch gap-4 w-3/5   ">
       <label
         className={`
@@ -119,6 +118,3 @@ const ProfileImageInput = ({
 };
 
 export default ProfileImageInput;
-// {uploading && (
-//   <p className="text-sm text-blue-500">Uploading to Cloudflare...</p>
-// )}

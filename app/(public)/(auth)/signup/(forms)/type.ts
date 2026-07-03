@@ -2,12 +2,7 @@ export type stepsDataType = {
   label: string;
 };
 
-export type skillOptionDataType = {
-  value: string;
-  label: string;
-  rate: string;
-  rateType: "per Hour" | "per Task" | "per Day";
-};
+export type roleDataType = "CONSUMER" | "PRODUCER" | "";
 
 export type introSignupDataType = {
   name: string;
@@ -18,9 +13,17 @@ export type introSignupDataType = {
   bio: string;
 };
 
+export type skillOptionDataType = {
+  value: string;
+  label: string;
+  rate: string;
+  rateType: "per Hour" | "per Task" | "per Day";
+};
+
 export type signUpFormDataType = introSignupDataType & {
   skill: skillOptionDataType[];
   password: string;
+  role: roleDataType;
 };
 
 export type loginFormDataType = {

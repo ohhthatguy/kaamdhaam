@@ -6,11 +6,7 @@ import { form3Schema } from "@/lib/zod-schema/signup-schema/Form3-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-const Form3 = ({
-  setActiveStep,
-}: {
-  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+const Form3 = () => {
   const signUpData = useAppSelector((state) => state.signUpForm);
 
   const {
@@ -25,7 +21,12 @@ const Form3 = ({
 
   const onSubmit = async (data: form3SchemaDataType) => {
     console.log(data);
-    const finalData = { ...signUpData, password: data.password };
+    const finalData = {
+      ...signUpData,
+      password: data.password,
+      isVerified: false,
+      locationCord: [0, 0],
+    };
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",

@@ -1,5 +1,6 @@
 import type {
   introSignupDataType,
+  roleDataType,
   signUpFormDataType,
   skillOptionDataType,
 } from "@/app/(public)/(auth)/signup/(forms)/type";
@@ -11,18 +12,23 @@ const initialState: signUpFormDataType = {
   age: "",
   email: "",
   phone: "",
-  profileImg: "asdasdasd",
+  profileImg: "",
   skill: [],
   bio: "",
   password: "",
+  role: "",
 };
 
 export const signUpFormSlice = createSlice({
   name: "signUpForm",
   initialState,
   reducers: {
+    updateRole: (state, action: PayloadAction<roleDataType>) => {
+      state.role = action.payload;
+    },
+
     updateIntroForm: (state, action: PayloadAction<introSignupDataType>) => {
-      return { ...state, ...action.payload };
+      Object.assign(state, action.payload);
     },
 
     updateSkillRateForm: (
@@ -36,6 +42,6 @@ export const signUpFormSlice = createSlice({
   },
 });
 
-export const { updateIntroForm, updateSkillRateForm, resetForm } =
+export const { updateRole, updateIntroForm, updateSkillRateForm, resetForm } =
   signUpFormSlice.actions;
 export default signUpFormSlice.reducer;

@@ -22,7 +22,6 @@ const Form1 = ({
   const {
     register,
     handleSubmit,
-
     setValue,
     formState: { errors, isValid },
   } = useForm<Form1DataType>({
@@ -92,7 +91,7 @@ const Form1 = ({
       <fieldset className="grid gap-2">
         <label htmlFor="phone">Phone</label>
         <input
-          type="number"
+          type="string"
           {...register("phone")}
           className="border rounded-md p-2 text-md"
           placeholder="98XXXXXXXX"

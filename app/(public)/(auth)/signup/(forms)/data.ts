@@ -1,10 +1,19 @@
 import type { skillOptionDataType, stepsDataType } from "./type";
-export const stepData: stepsDataType[] = [
-  { label: "Who are you ?" },
-  { label: "What are your skills?" },
-  { label: "What is your Rate?" },
 
-  { label: "where are you ?" },
+export const consumerStepData: stepsDataType[] = [
+  { label: "Introduction" },
+  { label: "Skills & Rate" },
+  { label: "Password" },
+
+  { label: "Done" },
+];
+
+export const producerStepData: stepsDataType[] = [
+  { label: "Introduction" },
+  { label: "Intrested Skills" },
+  { label: "Password" },
+
+  { label: "Done" },
 ];
 
 export const skillOption: skillOptionDataType[] = [

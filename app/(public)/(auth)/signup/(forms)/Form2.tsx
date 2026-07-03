@@ -18,23 +18,31 @@ const Form2 = ({
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const dispatch = useAppDispatch();
-  const { skill, ...restOfData } = useAppSelector((state) => state.signUpForm);
-
+  const { skill, role, ...restOfData } = useAppSelector(
+    (state) => state.signUpForm,
+  );
+  console.log(restOfData);
   const [selectedOption, setSelectedOption] =
     useState<MultiValue<skillOptionDataType>>(skill);
-  console.log(selectedOption);
+
+  const updateForm = () => {
+    dispatch(updateSkillRateForm([...selectedOption]));
+    setActiveStep(3);
+  };
+
   const checkDisableBtn = () => {
     const k = selectedOption.every((e) => e.rate !== "");
     if (k) {
-      dispatch(updateSkillRateForm([...selectedOption]));
-      setActiveStep(3);
+      updateForm();
     } else {
+      console.log(selectedOption);
+
       toast.error("Please Enter All Field");
     }
   };
 
   return (
-    <div className="flex flex-col gap-4  h-96 overflow-auto  scrollbar-custom ">
+    <div className="flex flex-col gap-4     ">
       <fieldset className="grid  gap-2">
         <label htmlFor="name">Skills</label>
         <Select
@@ -58,7 +66,9 @@ const Form2 = ({
               >
                 <div className="text-sm  w-1/5 xs:w-2/5">{e.label}</div>
 
-                <div className="w-3/5 xs:w-2/5 relative   flex justify-between gap-2">
+                <div
+                  className={` ${role === "CONSUMER" ? "hidden" : "block"} w-3/5 xs:w-2/5 relative   flex justify-between gap-2`}
+                >
                   <input
                     type="number"
                     required
@@ -70,7 +80,10 @@ const Form2 = ({
                       setSelectedOption((prev) =>
                         prev.map((item, idx) =>
                           idx === index
-                            ? { ...item, rate: ele.target.value }
+                            ? {
+                                ...item,
+                                rate: ele.target.value,
+                              }
                             : item,
                         ),
                       )
@@ -108,7 +121,9 @@ const Form2 = ({
             <div>
               <button
                 className="border w-fit px-4 py-2 rounded-md cursor-pointer"
-                onClickCapture={() => checkDisableBtn()}
+                onClick={() =>
+                  role === "CONSUMER" ? updateForm() : checkDisableBtn()
+                }
                 // disabled={selectedOption.length !== 0}
               >
                 Next
