@@ -1,12 +1,12 @@
 import Footer from "./(homepage)/Footer";
-import Header from "./(homepage)/Header";
 import Hero from "./(homepage)/Hero";
+import WhyKaamDhaam from "./(homepage)/WhyKaamDhaam";
 
 export default function Home() {
   return (
     <>
-      <Header />
       <Hero />
+      <WhyKaamDhaam />
       <Footer />
     </>
   );
