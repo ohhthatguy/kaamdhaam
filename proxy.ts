@@ -9,7 +9,7 @@ interface CustomJwtPayload {
 }
 
 export const config = {
-  runtime: "nodejs",
+  // runtime: "nodejs",  uncommonet this
 
   matcher: ['/api/((?!auth).*)"'],
 };

@@ -1,32 +1,10 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "./Header";
 
-import gsap from "gsap";
-import { useEffect, useRef } from "react";
 const Hero = () => {
-  const mainContainerRef = useRef(null);
-  useEffect(() => {
-    gsap.to(mainContainerRef.current, {
-      opacity: 0,
-      ease: "power1.inOut",
-      scrollTrigger: {
-        trigger: mainContainerRef.current,
-        start: "top 20%",
-        end: "center 20%",
-        pin: true,
-        markers: true,
-        scrub: true, // 🔥 key for parallax feel
-      },
-    });
-  }, []);
-
   return (
-    <main
-      ref={mainContainerRef}
-      className="relative h-screen w-full overflow-hidden "
-    >
+    <main className="relative h-screen w-full overflow-hidden ">
       <Header />
 
       <Image
