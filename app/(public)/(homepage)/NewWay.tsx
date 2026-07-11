@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const NewWay = () => {
   return (
-    <section className="min-h-screen relative">
+    <section className="min-h-screen relative ">
       <Image
         src="/hero/kaamdhaam_hero.jpeg"
         alt="Local Marketplace Background"
@@ -27,7 +27,10 @@ const NewWay = () => {
             community.
           </div>
 
-          <Link href={"/login"} className="bg-accent py-2 px-4  rounded-md">
+          <Link
+            href={"/login"}
+            className="bg-surface text-black py-2 px-4  rounded-md"
+          >
             Proceed the way
           </Link>
         </div>

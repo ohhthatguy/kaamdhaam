@@ -1,0 +1,38 @@
+"use client";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export const MultipleStackingAnimationProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const mainContainerRef = useRef<HTMLDivElement | null>(null);
+  useGSAP(
+    () => {
+      const childSectionArr = Array.from(mainContainerRef.current!.children);
+
+      childSectionArr.forEach((e, indx) => {
+        ScrollTrigger.create({
+          trigger: e,
+          start: "top top",
+          end: "+=100%",
+          pin: true,
+          pinSpacing: false,
+          //   markers: true,
+        });
+      });
+    },
+    { scope: mainContainerRef },
+  );
+
+  return (
+    <section ref={mainContainerRef} className="z-0">
+      {children}
+    </section>
+  );
+};
