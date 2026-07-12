@@ -1,8 +1,10 @@
+import { EaseInAnimationProvider } from "@/lib/component/Provider/EaseInAnimationProvider";
 import { MultipleStackingAnimationProvider } from "@/lib/component/Provider/MultipleStackingAnimationProvider";
 import Footer from "./(homepage)/Footer";
 import Hero from "./(homepage)/Hero";
 import JoinCommunity from "./(homepage)/JoinCommunity";
 import NewWay from "./(homepage)/NewWay";
+import PopularProjects from "./(homepage)/PopularProjects";
 import WhyKaamDhaam from "./(homepage)/WhyKaamDhaam";
 
 export default function Home() {
@@ -10,10 +12,15 @@ export default function Home() {
     <>
       <Hero />
       <WhyKaamDhaam />
+
       <MultipleStackingAnimationProvider>
         <NewWay />
         <JoinCommunity />
       </MultipleStackingAnimationProvider>
+
+      <EaseInAnimationProvider>
+        <PopularProjects />
+      </EaseInAnimationProvider>
 
       <Footer />
     </>

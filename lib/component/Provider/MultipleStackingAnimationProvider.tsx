@@ -17,13 +17,15 @@ export const MultipleStackingAnimationProvider = ({
       const childSectionArr = Array.from(mainContainerRef.current!.children);
 
       childSectionArr.forEach((e, indx) => {
+        const isLast = indx === childSectionArr.length - 1;
+
         ScrollTrigger.create({
           trigger: e,
           start: "top top",
-          end: "+=100%",
+          end: "bottom 60%",
           pin: true,
-          pinSpacing: false,
-          //   markers: true,
+          pinSpacing: isLast,
+          // markers: true,
         });
       });
     },

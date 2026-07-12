@@ -40,7 +40,7 @@ export const ParallaxImageAnimation = ({ imgSrc }: { imgSrc: string }) => {
   return (
     <div
       ref={mainContainer2Ref}
-      className=" overflow-hidden border relative p-2 h-[400px]"
+      className=" overflow-hidden  relative p-2 h-100 rounded-md"
     >
       <div ref={contentContainerRef} className="absolute inset-0 scale-125">
         <Image
