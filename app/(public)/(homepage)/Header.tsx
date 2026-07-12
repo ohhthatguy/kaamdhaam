@@ -4,7 +4,8 @@ import type { headerNavDataType } from "./type";
 
 const Header = () => {
   return (
-    <header className=" fixed z-50 w-full mt-2 flex justify-center items-center">
+    // fixed
+    <header className=" absolute z-50 w-full mt-2 flex justify-center items-center">
       <div className="  bg-dark flex justify-center items-center gap-8 p-4 rounded-md">
         <div>KAAMDHAAM</div>
         {headerNavData.map((e: headerNavDataType, index: number) => (

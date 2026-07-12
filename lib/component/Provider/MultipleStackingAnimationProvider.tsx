@@ -22,9 +22,10 @@ export const MultipleStackingAnimationProvider = ({
         ScrollTrigger.create({
           trigger: e,
           start: "top top",
-          end: "bottom 60%",
+          end: "bottom 30%",
           pin: true,
           pinSpacing: isLast,
+          scrub: true,
           // markers: true,
         });
       });
