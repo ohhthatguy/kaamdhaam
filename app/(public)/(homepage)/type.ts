@@ -14,3 +14,9 @@ export type PopularProjectDataType = {
   subTitle: string;
   link?: string;
 };
+
+export type workingStepsDataType = {
+  title: string;
+  subTitle: string;
+  imgSrc: string;
+};

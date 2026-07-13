@@ -2,6 +2,7 @@ import {
   headerNavDataType,
   PopularProjectDataType,
   whyKaamDhaamAnimDataType,
+  workingStepsDataType,
 } from "./type";
 
 export const headerNavData: headerNavDataType[] = [
@@ -150,5 +151,28 @@ export const kaamdhaamServiceData: PopularProjectDataType[] = [
     subTitle:
       "Hire temporary workers or discover flexible gig opportunities for various industries.",
     link: "https://www.gigsmart.com",
+  },
+];
+
+export const workingStepsData: workingStepsDataType[] = [
+  {
+    title: "Browse Your Zone",
+    subTitle:
+      "Discover professional and artasian with your near neighbourhood.",
+    imgSrc: "https://images.unsplash.com/photo-1521791136064-7986c2920216",
+  },
+
+  {
+    title: "Shedule With Trust",
+    subTitle:
+      "Connect thorough as early as today with our curated marketplace. ",
+    imgSrc: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+  },
+
+  {
+    title: "Get your deliverable fast",
+    subTitle:
+      "Every trade keeps the capital within your zip code fueling local resilience and fast delivery",
+    imgSrc: "https://images.unsplash.com/photo-1497366754035-f200968a6e72",
   },
 ];
