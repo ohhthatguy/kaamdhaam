@@ -16,12 +16,12 @@ export type introSignupDataType = {
 export type skillOptionDataType = {
   value: string;
   label: string;
-  rate: string;
+  rate: string | undefined;
   rateType: "per Hour" | "per Task" | "per Day";
 };
 
 export type signUpFormDataType = introSignupDataType & {
-  skill: skillOptionDataType[];
+  skills: skillOptionDataType[];
   password: string;
   role: roleDataType;
 };

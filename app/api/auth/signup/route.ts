@@ -29,8 +29,12 @@ export const POST = async (req: NextRequest) => {
     //save user with hashedPassword
     const hashedPswd = await bcrypt.hash(data.password, 10);
     const userWithHashedPswd = { ...data, password: hashedPswd };
-
+    console.log("userWithHashedPswd: ", userWithHashedPswd);
+    console.log(
+      UserModel.schema.path("skills").schema.path("rateType").enumValues,
+    );
     const newUser = await UserModel.create(userWithHashedPswd);
+    console.log("newUser: ", newUser);
 
     //geenrate Token. hash and save it
     const token = nanoid();

@@ -18,15 +18,24 @@ const Form2 = ({
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const dispatch = useAppDispatch();
-  const { skill, role, ...restOfData } = useAppSelector(
+  const { skills, role, ...restOfData } = useAppSelector(
     (state) => state.signUpForm,
   );
   console.log(restOfData);
   const [selectedOption, setSelectedOption] =
-    useState<MultiValue<skillOptionDataType>>(skill);
+    useState<MultiValue<skillOptionDataType>>(skills);
 
   const updateForm = () => {
-    dispatch(updateSkillRateForm([...selectedOption]));
+    console.log(skills);
+    console.log(selectedOption);
+
+    const newSelectedOption = selectedOption.map((e: skillOptionDataType) => ({
+      ...e,
+      rate: e.rate === "" ? undefined : e.rate,
+    }));
+
+    dispatch(updateSkillRateForm([...newSelectedOption]));
+
     setActiveStep(3);
   };
 

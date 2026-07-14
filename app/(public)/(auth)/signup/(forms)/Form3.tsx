@@ -4,10 +4,13 @@ import { useAppSelector } from "@/lib/hooks/redux-hooks";
 import type { form3SchemaDataType } from "@/lib/zod-schema/signup-schema/Form3-schema";
 import { form3Schema } from "@/lib/zod-schema/signup-schema/Form3-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const Form3 = () => {
   const signUpData = useAppSelector((state) => state.signUpForm);
+  const router = useRouter();
 
   const {
     register,
@@ -20,7 +23,8 @@ const Form3 = () => {
   });
 
   const onSubmit = async (data: form3SchemaDataType) => {
-    console.log(data);
+    // console.log(data);
+    // console.log(signUpData);
     const finalData = {
       ...signUpData,
       password: data.password,
@@ -51,9 +55,14 @@ const Form3 = () => {
         "Signup initiated successfully! Verification email sent.",
         result,
       );
+
+      toast.success("Signup initiated successfully! Verification email sent.");
     } catch (err) {
+      toast.error("Some Error happened!! ");
+
       console.log("Error: ", err);
     }
+    router.replace("/login");
   };
 
   return (

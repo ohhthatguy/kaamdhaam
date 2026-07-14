@@ -13,7 +13,7 @@ const initialState: signUpFormDataType = {
   email: "",
   phone: "",
   profileImg: "",
-  skill: [],
+  skills: [],
   bio: "",
   password: "",
   role: "",
@@ -35,7 +35,7 @@ export const signUpFormSlice = createSlice({
       state,
       action: PayloadAction<skillOptionDataType[]>,
     ) => {
-      state.skill = action.payload;
+      state.skills = action.payload;
     },
 
     resetForm: () => initialState,

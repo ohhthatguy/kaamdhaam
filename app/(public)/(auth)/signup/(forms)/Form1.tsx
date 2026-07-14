@@ -15,7 +15,7 @@ const Form1 = ({
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const dispatch = useAppDispatch();
-  const { skill, password, ...restOfFormData } = useAppSelector(
+  const { skills, password, ...restOfFormData } = useAppSelector(
     (state) => state.signUpForm,
   );
 

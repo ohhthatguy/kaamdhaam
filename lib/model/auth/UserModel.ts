@@ -47,11 +47,12 @@ const UserSchema = new mongoose.Schema(
         },
         rate: {
           type: String,
-          required: [true, "Please provide a rate for this skill"],
+          default: undefined,
+          // required: [true, "Please provide a rate for this skill"],
         },
         rateType: {
           type: String,
-          enum: ["per Hour", "per Day", "Flat Rate"],
+          enum: ["per Hour", "per Day", "per Task"],
           required: [true, "Please select a rate type"],
         },
       },
