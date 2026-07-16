@@ -1,12 +1,12 @@
 // import { EaseInAnimationProvider } from "@/lib/component/Provider/EaseInAnimationProvider";
 import { MultipleStackingAnimationProvider } from "@/lib/component/Provider/MultipleStackingAnimationProvider";
-import Footer from "./(homepage)/Footer";
-import Hero from "./(homepage)/Hero";
-import HowItWorks from "./(homepage)/HowItWorks";
-import JoinCommunity from "./(homepage)/JoinCommunity";
-import NewWay from "./(homepage)/NewWay";
-import PopularProjects from "./(homepage)/PopularProjects";
-import WhyKaamDhaam from "./(homepage)/WhyKaamDhaam";
+import Footer from "./(public)/(homepage)/Footer";
+import Hero from "./(public)/(homepage)/Hero";
+import HowItWorks from "./(public)/(homepage)/HowItWorks";
+import JoinCommunity from "./(public)/(homepage)/JoinCommunity";
+import NewWay from "./(public)/(homepage)/NewWay";
+import PopularProjects from "./(public)/(homepage)/PopularProjects";
+import WhyKaamDhaam from "./(public)/(homepage)/WhyKaamDhaam";
 
 export default function Home() {
   return (

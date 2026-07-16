@@ -5,9 +5,17 @@ import {
 } from "@/lib/zod-schema/login-schema/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux-hooks";
+import { saveLoginDataFromDb } from "@/lib/slice/afterLoginSlice/afterLoginSlice";
+
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
+  const dataFromRedux = useAppSelector((state) => state.afterLoginSlice);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -34,7 +42,18 @@ const LoginForm = () => {
         throw new Error(data.message || "Something went wrong during login");
       }
 
-      console.log("LOGIN SUCCESSFUL", data);
+      console.log("LOGIN SUCCESSFUL", data.data);
+
+      dispatch(saveLoginDataFromDb(data.data));
+
+      console.log(dataFromRedux);
+
+      if (data.data.role === "PRODUCER") {
+        router.replace("/dashboard");
+      } else if (data.data.role === "CONSUMER") {
+        router.replace("/home");
+      }
+
       //save this data in redux and redirect in homepage
     } catch (err) {
       console.log("ERR: ", err);

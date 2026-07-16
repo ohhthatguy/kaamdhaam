@@ -1,5 +1,5 @@
 import ToastProvider from "@/lib/component/ToastProvider";
-import StoreProvider from "../StoreProvider";
+import StoreProvider from "./StoreProvider";
 
 import type { Metadata } from "next";
 import { Montserrat, Outfit } from "next/font/google";

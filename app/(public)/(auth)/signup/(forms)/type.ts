@@ -26,6 +26,27 @@ export type signUpFormDataType = introSignupDataType & {
   role: roleDataType;
 };
 
+export type LocationCordType = {
+  type: "Point";
+  coordinates?: [number, number];
+};
+
+export type afterLoginDataType = {
+  _id: string;
+  name: string;
+  age: string;
+  email: string;
+  phone: string;
+  profileImg: string;
+  skills: skillOptionDataType[];
+  bio: string;
+  role: string;
+  locationCord: LocationCordType;
+
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type loginFormDataType = {
   email: string;
   password: string;

@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import afterLoginReducer from "./slice/afterLoginSlice/afterLoginSlice";
 import signupFormReducer from "./slice/signupForm/signupFormSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       signUpForm: signupFormReducer,
+      afterLoginSlice: afterLoginReducer,
     },
   });
 };

@@ -9,19 +9,49 @@ interface CustomJwtPayload {
 }
 
 export const config = {
-  // runtime: "nodejs",  uncommonet this
+  // runtime: "nodejs", //uncommonet this
 
-  matcher: ['/api/((?!auth).*)"'],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET_KEY || "access_secret_key";
 const REFRESH_SECRET = process.env.REFRESH_SECRET_KEY || "access_secret_key";
 
 export const proxy = async (req: NextRequest) => {
+  console.log("PROXY HIT:", req.nextUrl.pathname);
+
+  const pathname = req.nextUrl.pathname;
+
+  const publicRoutes = [
+    "/login",
+    "/signup",
+    "/verifyEmail",
+
+    "/api/auth/login",
+    "/api/auth/refreshToken",
+    "/api/auth/signup",
+    "/api/cloudinary-sign",
+    "/api/verify/email",
+    "/api/verify/expired-token",
+  ];
+
+  const isPublicRoute =
+    pathname === "/" ||
+    publicRoutes.some((route) => pathname.startsWith(route));
+
+  if (isPublicRoute) {
+    return NextResponse.next();
+  }
+
   try {
     const accessToken = req.cookies.get("access_token")?.value;
+    console.log("ACCESS TOKEN:", accessToken);
+
+    console.log("TYPE:", typeof accessToken);
+    console.log("IS EMPTY:", !accessToken);
 
     if (!accessToken) {
+      console.log("3. NO ACCESS TOKEN, CALLING REFRESH HANDLER");
       return handleAccessTokenGeneration(req);
     }
 
@@ -40,8 +70,21 @@ export const proxy = async (req: NextRequest) => {
       );
     }
 
-    const res = NextResponse.next();
+    const pathname = req.nextUrl.pathname;
+    if (!decodedUser.role) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
 
+    if (pathname.startsWith("/producer") && decodedUser.role !== "PRODUCER") {
+      return NextResponse.redirect(new URL("/consumer/home", req.url));
+    }
+
+    // Consumer protected routes
+    if (pathname.startsWith("/consumer") && decodedUser.role !== "CONSUMER") {
+      return NextResponse.redirect(new URL("/producer/dashboard", req.url));
+    }
+
+    const res = NextResponse.next();
     res.headers.set("x-user-id", decodedUser.userId);
     res.headers.set("x-user-email", decodedUser.email);
     res.headers.set("x-user-role", decodedUser.role);
@@ -55,7 +98,11 @@ export const proxy = async (req: NextRequest) => {
 
 const handleAccessTokenGeneration = async (req: NextRequest) => {
   try {
+    console.log("INSIDE handleAccessTokenGeneration");
+
     const refreshToken = req.cookies.get("refresh_token")?.value;
+
+    console.log("REFRESH TOKEN INSIDE:", refreshToken);
 
     if (!refreshToken) {
       return NextResponse.json(
@@ -64,12 +111,15 @@ const handleAccessTokenGeneration = async (req: NextRequest) => {
       );
     }
 
-    const refreshResponse = await fetch(new URL("/api/auth/refresh", req.url), {
-      method: "POST",
-      headers: {
-        Cookie: `refresh_token=${refreshToken}`,
+    const refreshResponse = await fetch(
+      new URL("/api/auth/refreshToken", req.url),
+      {
+        method: "POST",
+        headers: {
+          Cookie: `refresh_token=${refreshToken}`,
+        },
       },
-    });
+    );
 
     if (!refreshResponse.ok) {
       return NextResponse.json(
@@ -89,6 +139,22 @@ const handleAccessTokenGeneration = async (req: NextRequest) => {
 
     if (newAccessCookie) {
       const decoded = jwt.decode(newAccessCookie) as CustomJwtPayload;
+
+      const pathname = req.nextUrl.pathname;
+
+      if (!decoded.role) {
+        return NextResponse.redirect(new URL("/login", req.url));
+      }
+
+      if (pathname.startsWith("/producer") && decoded.role !== "PRODUCER") {
+        return NextResponse.redirect(new URL("/consumer/home", req.url));
+      }
+
+      // Consumer protected routes
+      if (pathname.startsWith("/consumer") && decoded.role !== "CONSUMER") {
+        return NextResponse.redirect(new URL("/producer/dashboard", req.url));
+      }
+
       response.headers.set("x-user-id", decoded.userId);
       response.headers.set("x-user-email", decoded.email);
       response.headers.set("x-user-role", decoded.role);
