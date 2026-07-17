@@ -46,6 +46,9 @@ export const proxy = async (req: NextRequest) => {
   try {
     const accessToken = req.cookies.get("access_token")?.value;
     console.log("ACCESS TOKEN:", accessToken);
+    const refreshToken = req.cookies.get("refresh_token")?.value;
+
+    console.log("REFRESH TOKEN INSIDE:", refreshToken);
 
     console.log("TYPE:", typeof accessToken);
     console.log("IS EMPTY:", !accessToken);
@@ -116,7 +119,7 @@ const handleAccessTokenGeneration = async (req: NextRequest) => {
       {
         method: "POST",
         headers: {
-          Cookie: `refresh_token=${refreshToken}`,
+          cookie: req.headers.get("cookie") ?? "",
         },
       },
     );

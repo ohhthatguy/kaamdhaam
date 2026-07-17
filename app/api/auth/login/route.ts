@@ -52,9 +52,10 @@ export const GET = async (req: NextRequest) => {
       {
         email: user.email,
         userId: user._id,
+        role: user.role,
       },
       REFRESH_SECRET,
-      { expiresIn: "30m" },
+      { expiresIn: "1h" },
     );
     const response = NextResponse.json({
       message: "Logged in successfully!",
@@ -78,8 +79,8 @@ export const GET = async (req: NextRequest) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 30 * 60, // 30 minutes in seconds
-      path: "/api/auth/refreshToken", // Only sent to the token-renewal endpoint!
+      maxAge: 1 * 60 * 60, // 1 hr in seconds
+      path: "/",
     });
 
     return response;

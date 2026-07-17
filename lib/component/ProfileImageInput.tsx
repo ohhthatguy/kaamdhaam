@@ -55,15 +55,6 @@ const ProfileImageInput = ({
     }
   };
 
-  //   const handleLocalImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const file = e.target.files?.[0];
-  //     if (file) {
-  //       if (imagePreview) URL.revokeObjectURL(imagePreview);
-  //       const localUrl = URL.createObjectURL(file);
-  //       setImagePreview(localUrl);
-  //     }
-  //   };
-
   return (
     <div className="flex flex-col items-stretch gap-4 w-3/5   ">
       <label

@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+// import dbConnect from "@/lib/dbConnect";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await dbConnect();
+    // await dbConnect();
     // 1. Verify the refresh token
     const decoded = jwt.verify(refreshToken, REFRESH_SECRET);
 
