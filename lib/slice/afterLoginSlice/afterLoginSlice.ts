@@ -22,7 +22,6 @@ export const afterLoginSlice = createSlice({
   initialState,
   reducers: {
     saveLoginDataFromDb: (state, action: PayloadAction<afterLoginDataType>) => {
-      console.log("Reducer called", action.payload);
       const {
         _id,
         name,

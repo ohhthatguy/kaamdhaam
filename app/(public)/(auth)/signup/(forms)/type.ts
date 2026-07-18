@@ -18,6 +18,7 @@ export type skillOptionDataType = {
   label: string;
   rate: string | undefined;
   rateType: "per Hour" | "per Task" | "per Day";
+  isSelected?: boolean;
 };
 
 export type signUpFormDataType = introSignupDataType & {
