@@ -5,13 +5,19 @@ import type { workPostDataType } from "@/lib/zod-schema/workPost-schema/workPost
 import Image from "next/image";
 import Link from "next/link";
 
-const MyWorks = async ({ _id }: { _id: string }) => {
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ _id: string }>;
+}) => {
+  const { _id } = await searchParams;
   const getPostedWorks = async () => {
     try {
       await dbConnect();
-      const workData = await WorkPostModel.find({ createdBy: _id })
-        .sort({ createdAt: -1 })
-        .limit(2);
+      const workData = await WorkPostModel.find({ createdBy: _id }).sort({
+        createdAt: -1,
+      });
+
       console.log("WORKDATA: ", workData);
       return workData;
     } catch (error) {
@@ -23,23 +29,17 @@ const MyWorks = async ({ _id }: { _id: string }) => {
     (await getPostedWorks()) as (workPostDataType & DbTypes)[];
 
   return (
-    <section className="flex flex-col gap-8 ">
+    <section className="mx-32 py-8 flex flex-col gap-8 min-h-screen ">
       <div className="flex justify-between items-center">
-        <h3>MY POSTED WORKS</h3>
-        <Link
-          href={`/producer/all-work-posts/?_id=${_id}`}
-          className="hover:cursor-pointer underline"
-        >
-          MORE
-        </Link>
+        <h3>MY POSTED WORKS ({workData.length})</h3>
       </div>
 
       <div
-        className={`grid ${workData.length === 2 ? "grid-cols-[1.25fr_0.75fr]" : "grid-cols-1"}   gap-8 h-[90vh] `}
+        className={`grid ${workData.length <= 1 ? "grid-cols-1" : "grid-cols-2"}   gap-8  `}
       >
         {workData.length > 0 ? (
           workData.map((e: workPostDataType & DbTypes, index: number) => (
-            <div key={index} className=" flex flex-col gap-4 ">
+            <div key={index} className=" flex flex-col gap-4 h-[90vh] border ">
               <Link
                 href={`/producer/work-detail?workPostId=${e._id}`}
                 className="relative h-full overflow-hidden hover:cursor-pointer"
@@ -92,4 +92,4 @@ const MyWorks = async ({ _id }: { _id: string }) => {
   );
 };
 
-export default MyWorks;
+export default Page;

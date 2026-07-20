@@ -75,16 +75,16 @@ export const proxy = async (req: NextRequest) => {
 
     const pathname = req.nextUrl.pathname;
     if (!decodedUser.role) {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/login", req.url));
     }
 
     if (pathname.startsWith("/producer") && decodedUser.role !== "PRODUCER") {
-      return NextResponse.redirect(new URL("/consumer/home", req.url));
+      return NextResponse.redirect(new URL(`/login`, req.url));
     }
 
     // Consumer protected routes
     if (pathname.startsWith("/consumer") && decodedUser.role !== "CONSUMER") {
-      return NextResponse.redirect(new URL("/producer/dashboard", req.url));
+      return NextResponse.redirect(new URL("/login", req.url));
     }
 
     const res = NextResponse.next();
@@ -150,12 +150,12 @@ const handleAccessTokenGeneration = async (req: NextRequest) => {
       }
 
       if (pathname.startsWith("/producer") && decoded.role !== "PRODUCER") {
-        return NextResponse.redirect(new URL("/consumer/home", req.url));
+        return NextResponse.redirect(new URL("/login", req.url));
       }
 
       // Consumer protected routes
       if (pathname.startsWith("/consumer") && decoded.role !== "CONSUMER") {
-        return NextResponse.redirect(new URL("/producer/dashboard", req.url));
+        return NextResponse.redirect(new URL("/login", req.url));
       }
 
       response.headers.set("x-user-id", decoded.userId);

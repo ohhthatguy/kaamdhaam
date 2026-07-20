@@ -1,4 +1,4 @@
-const History = () => {
+const History = ({ _id }: { _id: string }) => {
   return <div>History</div>;
 };
 

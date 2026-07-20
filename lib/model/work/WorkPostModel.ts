@@ -66,6 +66,7 @@ export const workPostSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
 workPostSchema.index({ locationCord: "2dsphere" });
 export default mongoose.models.WorkPost ||
   mongoose.model("WorkPost", workPostSchema);
