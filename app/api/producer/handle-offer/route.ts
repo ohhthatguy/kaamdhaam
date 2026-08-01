@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import OfferModel from "@/lib/model/offer/OfferModel";
+import WorkPostModel from "@/lib/model/work/WorkPostModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (req: NextRequest) => {
@@ -21,14 +22,28 @@ export const PUT = async (req: NextRequest) => {
       { returnDocument: "after" },
     );
 
+    const res2 = await WorkPostModel.findOneAndUpdate(
+      {
+        _id: data.postId,
+      },
+      {
+        $set: {
+          status: "ACTIVE",
+        },
+      },
+      { returnDocument: "after" },
+    );
+
     console.log("Offer Associated: ", res);
+    console.log("Updated workpostmodel: ", res2);
 
     if (!res) {
       throw new Error("res is empty: ");
     }
 
     return NextResponse.json({
-      message: "Successfully associated offer to a consumer by producer",
+      message:
+        "Successfully associated offer to a consumer by producer and status in workpostmodel also updated to active",
       data: res,
     });
   } catch (err) {

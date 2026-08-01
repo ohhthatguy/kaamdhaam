@@ -23,7 +23,9 @@ const ListingPart = async ({
     workData: (workPostDataType & DbTypes)[];
     totalWorks: number;
   };
-  const filter: Record<string, any> = {};
+  const filter: Record<string, any> = {
+    status: { $ne: "ACTIVE" },
+  };
 
   if (query) {
     filter.title = {
