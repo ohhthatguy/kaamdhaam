@@ -17,6 +17,7 @@ type workerDataType = {
 type offerModelDataType = {
   postId: string;
   intrestedWorkers: workerDataType[];
+  postStatus: "ACTIVE" | "PENDING" | "ENDED";
 };
 
 const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
@@ -25,15 +26,24 @@ const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
       await dbConnect();
       const postDetail = await OfferModel.findOne({ postId: workPostId });
 
-      return postDetail;
+      if (postDetail.postStatus === "ACTIVE") {
+        const assignedWorkerData: offerModelDataType = {
+          ...postDetail,
+          intrestedWorkers: postDetail.intrestedWorkers.filter(
+            (e: workerDataType) => e.isWorkAssociated === true,
+          ),
+        };
+
+        return assignedWorkerData;
+      } else {
+        return postDetail;
+      }
     } catch (error) {
       console.log("Error in getPostedWorks(): ", error);
     }
   };
 
   const workers: offerModelDataType = await getWorkPostDetail();
-
-  workers.intrestedWorkers.filter((e: workerDataType) => e.isWorkAssociated);
 
   console.log("asd");
   console.log(workers);
@@ -73,7 +83,11 @@ const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
               >
                 View Profile
               </Link>
-              <DecisionBtn id={workPostId} workerId={e.workerId.toString()} />
+              <DecisionBtn
+                isWorkAssociated={e.isWorkAssociated}
+                id={workPostId}
+                workerId={e.workerId.toString()}
+              />
             </div>
           </div>
         ))

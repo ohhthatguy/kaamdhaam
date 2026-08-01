@@ -2,7 +2,15 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const DecisionBtn = ({ id, workerId }: { id: string; workerId: string }) => {
+const DecisionBtn = ({
+  isWorkAssociated,
+  id,
+  workerId,
+}: {
+  isWorkAssociated: boolean;
+  id: string;
+  workerId: string;
+}) => {
   const [isOffered, setIsOffered] = useState<boolean>(false);
 
   const handleClick = async () => {
@@ -42,10 +50,10 @@ const DecisionBtn = ({ id, workerId }: { id: string; workerId: string }) => {
     <div>
       <button
         onClick={() => handleClick()}
-        disabled={isOffered}
-        className={`border border-border px-4 py-2 rounded-md text-white hover:cursor-pointer ${isOffered ? "bg-gray-700/40" : "bg-green-800/85"} `}
+        disabled={isWorkAssociated || isOffered}
+        className={`border border-border px-4 py-2 rounded-md text-white hover:cursor-pointer ${isWorkAssociated || isOffered ? "bg-gray-700/40" : "bg-green-800/85"} `}
       >
-        {isOffered ? "Job Assigned" : "Accept Offer"}
+        {isWorkAssociated || isOffered ? "Job Assigned" : "Accept Offer"}
       </button>
     </div>
   );
