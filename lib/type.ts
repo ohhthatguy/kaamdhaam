@@ -3,3 +3,9 @@ export type DbTypes = {
   createdAt?: string;
   updatedAt?: string;
 };
+
+export type breadCrumbDataType = {
+  title: string;
+  link?: string;
+  isCurrent: boolean;
+};

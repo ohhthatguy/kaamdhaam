@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ImSad } from "react-icons/im";
 import Pagination from "./Pagination";
+
 const ListingPart = async ({
   query,
   category,

@@ -53,9 +53,7 @@ const LoginForm = () => {
           `/producer/dashboard?_id=${data.data._id}&name=${data.data.name}`,
         );
       } else if (data.data.role === "CONSUMER") {
-        router.replace(
-          `/consumer/homepage?_id=${data.data._id}&name=${data.data.name}`,
-        );
+        router.replace(`/consumer/homepage`);
       }
 
       //save this data in redux and redirect in homepage

@@ -1,10 +1,10 @@
+import BreadCrumb from "@/lib/component/BreadCrumb";
 import dbConnect from "@/lib/dbConnect";
 import WorkPostModel from "@/lib/model/work/WorkPostModel";
-import type { DbTypes } from "@/lib/type";
+import type { DbTypes, breadCrumbDataType } from "@/lib/type";
 import type { workPostDataType } from "@/lib/zod-schema/workPost-schema/workPost-schema";
 import EmployerDetail from "./EmployerDetail";
 import WorkDetail from "./WorkDetail";
-
 const page = async ({
   searchParams,
 }: {
@@ -32,10 +32,26 @@ const page = async ({
     (await getWorkPostDetail()) as workPostDataType & DbTypes;
   console.log(postDetail);
 
+  const breadCrumbData: breadCrumbDataType[] = [
+    {
+      title: "Home",
+      link: `/consumer/homepage`,
+      isCurrent: false,
+    },
+    {
+      title: "Work Detail",
+
+      isCurrent: true,
+    },
+  ];
+
   return (
-    <div className="mx-28 py-8 grid gap-8 grid-cols-[1.35fr_0.65fr]">
-      <WorkDetail postDetail={postDetail} />
-      <EmployerDetail postDetail={postDetail} />
+    <div className="mx-28 py-8 flex flex-col gap-4">
+      <BreadCrumb breadCrumbData={breadCrumbData} />
+      <div className="grid gap-8 grid-cols-[1.35fr_0.65fr]">
+        <WorkDetail postDetail={postDetail} />
+        <EmployerDetail postDetail={postDetail} />
+      </div>
     </div>
   );
 };

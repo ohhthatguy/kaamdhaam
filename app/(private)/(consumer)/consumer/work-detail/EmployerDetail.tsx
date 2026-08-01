@@ -1,18 +1,21 @@
 import dbConnect from "@/lib/dbConnect";
+import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
+import OfferModel from "@/lib/model/offer/OfferModel";
 import WorkPostModel from "@/lib/model/work/WorkPostModel";
 import type { DbTypes } from "@/lib/type";
 import type { workPostDataType } from "@/lib/zod-schema/workPost-schema/workPost-schema";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ImArrowRight2, ImSad } from "react-icons/im";
+import ImIntrestedComponent from "./ImIntrestedComponent";
 
 const EmployerDetail = async ({
   postDetail,
 }: {
   postDetail: workPostDataType & DbTypes;
 }) => {
-  console.log("POST DETAIL IN consumer SIDE: ", postDetail);
+  console.log("POST DETAIL IN consumer SIDE: ", postDetail._id);
+  const userData = await getCurrentUserData();
 
   const getPostedWorks = async (): Promise<
     (workPostDataType & DbTypes)[] | undefined
@@ -34,8 +37,30 @@ const EmployerDetail = async ({
     }
   };
 
+  const checkIfAlreadyOfferSubmitted = async () => {
+    try {
+      await dbConnect();
+
+      const offerWorker = await OfferModel.countDocuments({
+        postId: postDetail._id,
+      });
+      console.log("OFFER: ", offerWorker);
+      if (offerWorker) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log("Error in checkIfAlreadyOfferSubmitted(): ", err);
+    }
+  };
+
   const moreWork = await getPostedWorks();
   console.log(moreWork);
+
+  const muteImIntrestedBtn = await checkIfAlreadyOfferSubmitted();
+  console.log(muteImIntrestedBtn);
+
   return (
     <section className="flex flex-col gap-8">
       <div className="flex flex-col border border-border h-[60vh]  bg-surface gap-8 justify-center items-center ">
@@ -55,12 +80,21 @@ const EmployerDetail = async ({
           <h4>{postDetail.createdBy.name}</h4>
         </div>
         {/* <div> */}
-        <Link
-          href="/asd"
-          className="border border-border px-4 py-2 rounded-md text-white hover:scale-105 scale-100 transition-all duration-500 bg-green-800/85"
-        >
-          I'm Intrested!
-        </Link>
+
+        {muteImIntrestedBtn ? (
+          <span
+            className={`border border-border px-4 py-2 rounded-md text-white hover:scale-105 scale-100 transition-all duration-500 bg-gray-600 `}
+          >
+            {" "}
+            Offer Sent !
+          </span>
+        ) : (
+          <ImIntrestedComponent
+            id={postDetail._id.toString()}
+            userData={userData}
+          />
+        )}
+
         {/* </div> */}
       </div>
 

@@ -41,7 +41,7 @@ export const GET = async (req: NextRequest) => {
         email: user.email,
         role: user.role,
         profileImg: user.profileImg,
-
+        name: user.name,
         userId: user._id,
       },
       ACCESS_SECRET,
@@ -53,6 +53,8 @@ export const GET = async (req: NextRequest) => {
         email: user.email,
         userId: user._id,
         role: user.role,
+        name: user.name,
+        profileImg: user.profileImg,
       },
       REFRESH_SECRET,
       { expiresIn: "1h" },

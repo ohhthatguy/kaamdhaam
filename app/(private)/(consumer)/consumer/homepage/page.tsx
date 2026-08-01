@@ -1,5 +1,8 @@
 import Intro from "./Intro";
-import WorkListing from "./WorkListing";
+
+import FilterPart from "./FilterPart";
+import ListingPart from "./ListingPart";
+
 const Page = async ({
   searchParams,
 }: {
@@ -11,12 +14,15 @@ const Page = async ({
     page?: string;
   }>;
 }) => {
-  const { _id, name, query, category, page } = await searchParams;
+  const { query, category, page } = await searchParams;
 
   return (
     <div className="mx-32 py-8 flex flex-col gap-12">
-      <Intro name={name} _id={_id} />
-      <WorkListing query={query} category={category} page={page} />
+      <Intro />
+      <section className=" h-[80vh]  grid grid-cols-[0.5fr_1.75fr] gap-8">
+        <FilterPart />
+        <ListingPart query={query} category={category} page={page} />
+      </section>
     </div>
   );
 };

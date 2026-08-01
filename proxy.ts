@@ -6,6 +6,7 @@ interface CustomJwtPayload {
   email: string;
   role: string;
   profileImg: string;
+  name: string;
 }
 
 export const config = {
@@ -55,6 +56,7 @@ export const proxy = async (req: NextRequest) => {
 
     if (!accessToken) {
       console.log("3. NO ACCESS TOKEN, CALLING REFRESH HANDLER");
+
       return handleAccessTokenGeneration(req);
     }
 
@@ -92,10 +94,12 @@ export const proxy = async (req: NextRequest) => {
     res.headers.set("x-user-email", decodedUser.email);
     res.headers.set("x-user-role", decodedUser.role);
     res.headers.set("x-user-profileImg", decodedUser.profileImg);
+    res.headers.set("x-user-name", decodedUser.name);
 
     return res;
   } catch (err) {
     console.log("ERROR AT PROXY: ", err);
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 };
 
@@ -108,67 +112,95 @@ const handleAccessTokenGeneration = async (req: NextRequest) => {
     console.log("REFRESH TOKEN INSIDE:", refreshToken);
 
     if (!refreshToken) {
+      //  return NextResponse.redirect(new URL("/login", req.url));
       return NextResponse.json(
         { error: "Session expired. No REFRESHTOKEN.  Please log in." },
         { status: 401 },
       );
     }
 
-    const refreshResponse = await fetch(
-      new URL("/api/auth/refreshToken", req.url),
-      {
-        method: "POST",
-        headers: {
-          cookie: req.headers.get("cookie") ?? "",
-        },
-      },
-    );
+    const newAccessToken = (await generateAccessToken(refreshToken)) as string;
 
-    if (!refreshResponse.ok) {
+    if (!newAccessToken) {
       return NextResponse.json(
         { error: "Session expired.  No REFRESHTOKEN. Please log in." },
         { status: 401 },
       );
     }
 
-    const response = NextResponse.next(); // next() to forward the request from middleware to other. We add data to this before returning
+    const response = NextResponse.next();
 
-    // get the data from /auth/refresh saved in cokkie
-    const newAccessTokenInHeader = refreshResponse.headers.get("set-cookie");
+    response.cookies.set({
+      name: "access_token",
+      value: newAccessToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 2 * 60,
+      path: "/",
+    });
 
-    //various data is saved but we need the geenrated accessTOken. it is in form of acesToken=asda;httpOnly;expiresIn=2m;
-    //so we first split by ; and then = to get accessToken
-    const newAccessCookie = newAccessTokenInHeader?.split(";")[0].split("=")[1];
+    const decodedUser = jwt.verify(
+      newAccessToken,
+      ACCESS_SECRET,
+    ) as CustomJwtPayload;
 
-    if (newAccessCookie) {
-      const decoded = jwt.decode(newAccessCookie) as CustomJwtPayload;
-
-      const pathname = req.nextUrl.pathname;
-
-      if (!decoded.role) {
-        return NextResponse.redirect(new URL("/login", req.url));
-      }
-
-      if (pathname.startsWith("/producer") && decoded.role !== "PRODUCER") {
-        return NextResponse.redirect(new URL("/login", req.url));
-      }
-
-      // Consumer protected routes
-      if (pathname.startsWith("/consumer") && decoded.role !== "CONSUMER") {
-        return NextResponse.redirect(new URL("/login", req.url));
-      }
-
-      response.headers.set("x-user-id", decoded.userId);
-      response.headers.set("x-user-email", decoded.email);
-      response.headers.set("x-user-role", decoded.role);
-      response.headers.set("x-user-profileImg", decoded.profileImg);
+    const pathname = req.nextUrl.pathname;
+    if (!decodedUser.role) {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
-    console.log("proxy seamlessly reused /api/auth/refresh endpoint!");
+
+    if (pathname.startsWith("/producer") && decodedUser.role !== "PRODUCER") {
+      return NextResponse.redirect(new URL(`/login`, req.url));
+    }
+
+    // Consumer protected routes
+    if (pathname.startsWith("/consumer") && decodedUser.role !== "CONSUMER") {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    response.headers.set("x-user-id", decodedUser.userId);
+    response.headers.set("x-user-role", decodedUser.role);
+    response.headers.set("x-user-email", decodedUser.email);
+    response.headers.set("x-user-profileImg", decodedUser.profileImg);
+    response.headers.set("x-user-name", decodedUser.name);
+
     return response;
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Auth Error", err: error },
       { status: 500 },
+    );
+  }
+};
+
+const generateAccessToken = async (refreshToken: string) => {
+  try {
+    // 1. Verify the refresh token
+    const decoded = jwt.verify(refreshToken, REFRESH_SECRET);
+
+    if (!decoded || typeof decoded === "string") {
+      return null;
+    }
+    console.log(decoded);
+
+    const newAccessToken = jwt.sign(
+      {
+        userId: decoded.userId,
+        email: decoded.email,
+        role: decoded.role,
+        profileImg: decoded.profileImg,
+        name: decoded.name,
+      },
+      ACCESS_SECRET,
+      { expiresIn: "2m" },
+    );
+
+    return newAccessToken;
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Session expired. Please log in.", data: error },
+      { status: 401 },
     );
   }
 };
