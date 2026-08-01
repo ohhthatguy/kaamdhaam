@@ -6,7 +6,7 @@ const Intro = async () => {
   const name = headerList.get("x-user-name")!;
 
   return (
-    <section className="  h-[70vh] gap-8 flex flex-col justify-center  items-center">
+    <section className="  h-[40vh] gap-8 flex flex-col justify-center  items-center">
       <div className="grid grid-cols-[0.75fr] gap-8 w-full ">
         <div className="leading-tight tracking-tight ">
           <h1>WELCOME BACK, {name.split(" ")[0]}</h1>
