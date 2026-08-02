@@ -1,6 +1,7 @@
 // import { columns, Payment } from "./columns";
 import dbConnect from "@/lib/dbConnect";
 import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
+import OfferModel from "@/lib/model/offer/OfferModel";
 import WorkerModel from "@/lib/model/worker/WorkerModel";
 import { ImSad } from "react-icons/im";
 import { columns, consumerApplicationDataType } from "./column";
@@ -12,7 +13,7 @@ async function getData(): Promise<consumerApplicationDataType[] | undefined> {
 
   try {
     await dbConnect();
-
+    await OfferModel;
     const workerData = await WorkerModel.findOne({
       workerUserId: user?.id,
     })

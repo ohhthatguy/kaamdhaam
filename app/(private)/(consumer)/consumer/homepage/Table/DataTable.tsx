@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -51,15 +52,17 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {/* input  */}
-      <div className="flex items-center ">
+      <div className="flex w-3/5 items-center relative mb-4">
         <input
           placeholder="Filter by..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className=" w-full py-2  border border-gray-600"
+          className="w-full rounded-md py-2 px-8 border border-gray-500 hover:border-gray-500 focus:border-gray-500 focus:outline-none focus:ring-0"
         />
+
+        <SearchIcon className="ml-2 h-4 w-4 absolute" />
       </div>
 
       {/* table  */}
