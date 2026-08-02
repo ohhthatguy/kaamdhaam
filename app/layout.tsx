@@ -2,8 +2,11 @@ import ToastProvider from "@/lib/component/ToastProvider";
 import StoreProvider from "./StoreProvider";
 
 import type { Metadata } from "next";
-import { Montserrat, Outfit } from "next/font/google";
+import { Montserrat, Outfit, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -30,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${montserrat.variable} ${outfit.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", montserrat.variable, outfit.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full  scrollbar-custom text-unmuted-text flex flex-col font-body ">
         <StoreProvider>
