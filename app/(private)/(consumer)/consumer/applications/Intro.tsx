@@ -41,10 +41,13 @@ const Intro = async () => {
       return statusCounts;
     } catch (error) {
       console.log("ERROR IN workerData consumer/application/intro: ", error);
+
+      return undefined;
     }
   };
 
-  const data = await getWorkerData();
+  const data: { PENDING: number; ACTIVE: number; ENDED: number } | undefined =
+    await getWorkerData();
   console.log("DAta of workerhistory: ", data);
   return (
     <section className="flex flex-col gap-8">
@@ -59,23 +62,23 @@ const Intro = async () => {
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total Application Sent: </div>
           <h4 className="text-right">
-            {data.PENDING + data.ACTIVE + data.ENDED}
+            {data ? data.PENDING + data.ACTIVE + data.ENDED : undefined}
           </h4>
         </div>
 
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total PENDING: </div>
-          <h4 className="text-right">{data.PENDING}</h4>
+          <h4 className="text-right">{data ? data.PENDING : undefined}</h4>
         </div>
 
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total ACTIVE </div>
-          <h4 className="text-right">{data.ACTIVE}</h4>
+          <h4 className="text-right">{data ? data.ACTIVE : undefined}</h4>
         </div>
 
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total ENDED: </div>
-          <h4 className="text-right">{data.ENDED}</h4>
+          <h4 className="text-right">{data ? data.ENDED : undefined}</h4>
         </div>
       </section>
 

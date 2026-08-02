@@ -29,6 +29,14 @@ export const columns: ColumnDef<consumerApplicationDataType>[] = [
   {
     accessorKey: "title",
     header: "Title",
+    cell: ({ row }) => {
+      return (
+        // Apply wrapping classes here
+        <div className="max-w-70  leading-tight tracking-tight whitespace-normal wrap-break-words">
+          {row.getValue("title")}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "rate",
@@ -60,6 +68,13 @@ export const columns: ColumnDef<consumerApplicationDataType>[] = [
         </button>
       );
     },
+
+    cell: ({ row }) => {
+      const dateValue = row.getValue("dateApplied") as string;
+      const formatted = new Date(dateValue).toISOString().split("T")[0];
+
+      return <div>{formatted}</div>;
+    },
   },
   {
     accessorKey: "expectedTime",
@@ -68,20 +83,19 @@ export const columns: ColumnDef<consumerApplicationDataType>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => {
+      const statusStr = row.getValue("status") as
+        | "PENDING"
+        | "ACTIVE"
+        | "ENDED";
+
+      const statusData = {
+        PENDING: "bg-yellow-400 p-1 rounded-md text-center",
+        ACTIVE: "bg-green-400 p-1 rounded-md text-center",
+        ENDED: "bg-red-400 p-1 rounded-md text-center",
+      };
+
+      return <div className={`${statusData[statusStr]}`}>{statusStr}</div>;
+    },
   },
 ];
-
-// export const columns: ColumnDef<Payment>[] = [
-//   {
-//     accessorKey: "status",
-//     header: "Status",
-//   },
-//   {
-//     accessorKey: "email",
-//     header: "Email",
-//   },
-//   {
-//     accessorKey: "amount",
-//     header: "Amount",
-//   },
-// ];

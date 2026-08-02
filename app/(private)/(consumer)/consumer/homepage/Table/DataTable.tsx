@@ -50,24 +50,27 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      {/* input  */}
+      <div className="flex items-center ">
         <input
           placeholder="Filter by..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="border border-border w-full"
+          className=" w-full py-2  border border-gray-600"
         />
       </div>
-      <div className="overflow-hidden rounded-md border">
+
+      {/* table  */}
+      <div className="overflow-hidden  rounded-md  border-2 border-gray-500/50">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className=" p-4 bg-gray-300/50 ">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -80,6 +83,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -88,7 +92,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="p-4">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -110,6 +114,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
+      {/* pagination  */}
       <div className="flex items-center justify-end space-x-2 py-4">
         <button
           //   variant="outline"
