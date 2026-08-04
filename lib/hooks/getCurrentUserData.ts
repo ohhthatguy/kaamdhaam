@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 type CurrentUserData = {
   name: string;
   email: string;
-  role: string;
+  role: "CONSUMER" | "PRODUCER" | "ADMIN";
   profileImg: string;
   id: string;
 };
@@ -17,7 +17,10 @@ export const getCurrentUserData = async (): Promise<
 
     const name = headerlist.get("x-user-name");
     const email = headerlist.get("x-user-email");
-    const role = headerlist.get("x-user-role");
+    const role = headerlist.get("x-user-role") as
+      | "CONSUMER"
+      | "PRODUCER"
+      | "ADMIN";
     const profileImg = headerlist.get("x-user-profileImg");
     const id = headerlist.get("x-user-id");
 

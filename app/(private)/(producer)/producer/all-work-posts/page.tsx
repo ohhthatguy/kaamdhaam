@@ -1,20 +1,17 @@
 import dbConnect from "@/lib/dbConnect";
+import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
 import WorkPostModel from "@/lib/model/work/WorkPostModel";
 import type { DbTypes } from "@/lib/type";
 import type { workPostDataType } from "@/lib/zod-schema/workPost-schema/workPost-schema";
 import Image from "next/image";
 import Link from "next/link";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ _id: string }>;
-}) => {
-  const { _id } = await searchParams;
+const Page = async () => {
+  const user = await getCurrentUserData();
   const getPostedWorks = async () => {
     try {
       await dbConnect();
-      const workData = await WorkPostModel.find({ createdBy: _id }).sort({
+      const workData = await WorkPostModel.find({ createdBy: user?.id }).sort({
         createdAt: -1,
       });
 

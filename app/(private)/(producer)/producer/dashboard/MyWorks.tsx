@@ -1,15 +1,18 @@
 import dbConnect from "@/lib/dbConnect";
+import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
 import WorkPostModel from "@/lib/model/work/WorkPostModel";
 import type { DbTypes } from "@/lib/type";
 import type { workPostDataType } from "@/lib/zod-schema/workPost-schema/workPost-schema";
 import Image from "next/image";
 import Link from "next/link";
 
-const MyWorks = async ({ _id }: { _id: string }) => {
+const MyWorks = async () => {
+  const user = await getCurrentUserData();
+
   const getPostedWorks = async () => {
     try {
       await dbConnect();
-      const workData = await WorkPostModel.find({ createdBy: _id })
+      const workData = await WorkPostModel.find({ createdBy: user?.id })
         .sort({ createdAt: -1 })
         .limit(2);
       console.log("WORKDATA: ", workData);
@@ -27,7 +30,7 @@ const MyWorks = async ({ _id }: { _id: string }) => {
       <div className="flex justify-between items-center">
         <h3>MY POSTED WORKS</h3>
         <Link
-          href={`/producer/all-work-posts/?_id=${_id}`}
+          href={`/producer/all-work-posts`}
           className="hover:cursor-pointer underline"
         >
           MORE

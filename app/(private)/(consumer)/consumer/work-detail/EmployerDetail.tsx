@@ -83,10 +83,14 @@ const EmployerDetail = async ({
 
         {muteImIntrestedBtn ? (
           <span
-            className={`border border-border px-4 py-2 rounded-md text-white hover:scale-105 scale-100 transition-all duration-500 bg-gray-600 `}
+            className={`border border-border px-4 py-2 rounded-md text-white   ${postDetail.status === "ACTIVE" ? "bg-green-900" : postDetail.status === "ENDED" ? "bg-orange-600" : "bg-gray-600"}  `}
           >
             {" "}
-            Offer Sent !
+            {postDetail.status === "ACTIVE"
+              ? "Job Assigned"
+              : postDetail.status === "ENDED"
+                ? "Work Ended"
+                : "Offer Sent !"}
           </span>
         ) : (
           <ImIntrestedComponent

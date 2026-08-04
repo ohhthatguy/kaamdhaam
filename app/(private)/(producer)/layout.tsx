@@ -1,7 +1,13 @@
+import Header from "./producer/dashboard/Header";
+
 export default async function ProducerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <Header /> {children}
+    </>
+  );
 }

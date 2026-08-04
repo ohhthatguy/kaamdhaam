@@ -1,4 +1,4 @@
-import Header from "./homepage/Header";
+import ConsumerHeader from "./homepage/ConsumerHeader";
 
 export default async function ConsumerLayout({
   children,
@@ -7,7 +7,7 @@ export default async function ConsumerLayout({
 }) {
   return (
     <>
-      <Header />
+      <ConsumerHeader />
       {children}
     </>
   );

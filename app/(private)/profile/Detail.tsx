@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
-import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
+// import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
+import OfferModel from "@/lib/model/offer/OfferModel";
 import WorkerModel from "@/lib/model/worker/WorkerModel";
 import { Star } from "lucide-react";
 import Image from "next/image";
@@ -12,15 +13,18 @@ export type ReviewDataType = {
   description: string;
 };
 
-const Detail = async () => {
-  const user = await getCurrentUserData();
+const Detail = async ({ workerId }: { workerId: string }) => {
+  // const user = await getCurrentUserData();
+  // console.log(user);
+  console.log(workerId);
 
   const getWorkerData = async () => {
     try {
       await dbConnect();
 
+      await OfferModel;
       const workerData = await WorkerModel.findOne({
-        workerUserId: user?.id,
+        workerUserId: workerId,
       })
         .populate({
           path: "totalApplication",
@@ -60,7 +64,7 @@ const Detail = async () => {
       };
       return finalData;
     } catch (error) {
-      console.log("ERROR IN workerData consumer/application/intro: ", error);
+      console.log("ERROR IN workerData consumer/profile/Detail: ", error);
 
       return undefined;
     }
@@ -195,7 +199,7 @@ const Detail = async () => {
                             </div>
                           </div>
                         </div>
-                        <div className=" line-clamp-3 text-xl tracking-tight leading-tight">
+                        <div className=" line-clamp-3  tracking-tight leading-tight">
                           {e.description}
                         </div>
                       </div>

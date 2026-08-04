@@ -8,22 +8,22 @@ type consumerDataType = {
 const consumerData: consumerDataType[] = [
   {
     title: "Home",
-    link: "/consumer/homepage",
+    link: "/producer/dashboard",
   },
 
   {
-    title: "My Application",
-    link: "/consumer/applications",
+    title: "Requests",
+    link: "/producer/request",
   },
 
   {
     title: "Profile",
-    link: "/consumer/profile",
+    link: "/producer/profile",
   },
 
   {
-    title: "Home",
-    link: "/consumer/homepage",
+    title: "Create",
+    link: "/producer/create",
   },
 ];
 
@@ -31,7 +31,7 @@ const Header = () => {
   return (
     <header className=" flex justify-between items-center px-4 h-18 bg-light">
       <nav className="flex   items-center gap-8">
-        <Link href={"/consumer/homepage"} className="mr-8 text-xl">
+        <Link href={"/producer/dashboard"} className="mr-8 text-xl">
           KAAMDHAAM
         </Link>
         {consumerData.map((e: consumerDataType, index: number) => (

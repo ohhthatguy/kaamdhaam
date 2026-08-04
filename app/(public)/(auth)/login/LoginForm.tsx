@@ -49,9 +49,7 @@ const LoginForm = () => {
       console.log(dataFromRedux);
 
       if (data.data.role === "PRODUCER") {
-        router.replace(
-          `/producer/dashboard?_id=${data.data._id}&name=${data.data.name}`,
-        );
+        router.replace(`/producer/dashboard`);
       } else if (data.data.role === "CONSUMER") {
         router.replace(`/consumer/homepage`);
       }

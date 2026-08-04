@@ -12,6 +12,7 @@ type workerDataType = {
   workerId: string;
   isWorkAssociated: boolean;
   offerMadeAt?: Date;
+  _id: string;
 };
 
 type offerModelDataType = {
@@ -78,7 +79,7 @@ const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
             </div>
             <div className="flex gap-8 justify-around">
               <Link
-                href="#"
+                href={`/profile?workerId=${e.workerId}`}
                 className={`border border-border px-4 py-2 rounded-md  `}
               >
                 View Profile

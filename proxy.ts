@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 interface CustomJwtPayload {
   userId: string;
   email: string;
-  role: string;
+  role: "CONSUMER" | "PRODUCER" | "ADMIN";
   profileImg: string;
   name: string;
 }
@@ -34,6 +34,7 @@ export const proxy = async (req: NextRequest) => {
     "/api/cloudinary-sign",
     "/api/verify/email",
     "/api/verify/expired-token",
+    // "/consumer/profile",
   ];
 
   const isPublicRoute =
@@ -80,13 +81,20 @@ export const proxy = async (req: NextRequest) => {
       return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    if (pathname.startsWith("/producer") && decodedUser.role !== "PRODUCER") {
-      return NextResponse.redirect(new URL(`/login`, req.url));
-    }
+    if (
+      !(
+        pathname === "/consumer/profile" ||
+        pathname.startsWith("/consumer/profile/")
+      )
+    ) {
+      if (pathname.startsWith("/producer") && decodedUser.role !== "PRODUCER") {
+        return NextResponse.redirect(new URL(`/login`, req.url));
+      }
 
-    // Consumer protected routes
-    if (pathname.startsWith("/consumer") && decodedUser.role !== "CONSUMER") {
-      return NextResponse.redirect(new URL("/login", req.url));
+      // Consumer protected routes
+      if (pathname.startsWith("/consumer") && decodedUser.role !== "CONSUMER") {
+        return NextResponse.redirect(new URL("/login", req.url));
+      }
     }
 
     const res = NextResponse.next();

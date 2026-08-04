@@ -1,16 +1,16 @@
 import dbConnect from "@/lib/dbConnect";
-import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
+// import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
 import UserModel from "@/lib/model/auth/UserModel";
 import Image from "next/image";
 
-const Intro = async () => {
-  const user = await getCurrentUserData();
+const Intro = async ({ workerId }: { workerId: string }) => {
+  // const user = await getCurrentUserData();
   const getSkillAndBio = async () => {
     try {
       await dbConnect();
       const data = await UserModel.findById(
-        user?.id,
-        "skills email createdAt bio -_id",
+        workerId,
+        "skills name profileImg email createdAt bio -_id",
       );
       return data;
     } catch (Error) {
@@ -28,8 +28,8 @@ const Intro = async () => {
     <section className="rounded-md  gap-4 p-4 h-[50vh] bg-surface flex">
       <div className="relative  flex-1  overflow-hidden">
         <Image
-          src={user?.profileImg || "/hero/kaamdhaam_hero.jpeg"}
-          alt={user?.name || "User Image"}
+          src={skillsAndBio.profileImg || "/hero/kaamdhaam_hero.jpeg"}
+          alt={skillsAndBio.name || "User Image"}
           fill
           className="object-cover object-center aspect-square "
         />
@@ -38,7 +38,7 @@ const Intro = async () => {
       <div className="flex flex-2 flex-col justify-around ">
         <div className="flex flex-col gap-4">
           <div className=" tracking-tight leading-tight">
-            <h1 className="captialize">{user?.name}</h1>
+            <h1 className="captialize">{skillsAndBio.name}</h1>
             <code className="text-muted-text">{skillsAndBio.email}</code>
           </div>
           <div className="">Joined in {joinedDate}</div>
@@ -53,16 +53,6 @@ const Intro = async () => {
             </p>
           ))}
         </div>
-        {/* </div> */}
-
-        {/* <div>
-            <div>Trust Score </div>
-            <div>3/5 </div>
-          </div>
-          <div>
-            <div>Total Tour </div>
-            <div>25 </div>
-          </div> */}
       </div>
     </section>
   );
