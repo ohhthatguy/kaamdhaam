@@ -14,11 +14,11 @@ const ReviewSchema = new mongoose.Schema({
         ref: "WorkPost",
         required: true,
       },
-      bossId: {
-        type: mongoose.Schema.ObjectId,
-        ref: "User",
-        required: true,
-      },
+      reviewerName: { type: String, required: true },
+      reviewerProfileImg: { type: String, required: true },
+
+      reviewedAt: { type: Date, default: Date.now() },
+
       stars: { type: Number, default: 0, required: true },
       description: { type: String, required: true },
     },

@@ -1,7 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, EyeIcon } from "lucide-react";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -9,6 +10,7 @@ import { ArrowUpDown } from "lucide-react";
 export type consumerApplicationDataType = {
   title: string;
   rate: string;
+  postId: string;
   status: "PENDING" | "ACTIVE" | "ENDED";
   dateApplied: string;
   expectedTime:
@@ -24,9 +26,11 @@ export const columns: ColumnDef<consumerApplicationDataType>[] = [
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
+      console.log("INside table columns postId: ", row.getValue("postId"));
       return (
         // Apply wrapping classes here
-        <div className="max-w-70  leading-tight tracking-tight whitespace-normal wrap-break-words">
+
+        <div className="max-w-70  leading-tight tracking-tight whitespace-normal  wrap-break-words">
           {row.getValue("title")}
         </div>
       );
@@ -90,6 +94,20 @@ export const columns: ColumnDef<consumerApplicationDataType>[] = [
       };
 
       return <div className={`${statusData[statusStr]}`}>{statusStr}</div>;
+    },
+  },
+  {
+    accessorKey: "postId",
+    header: "Action",
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/consumer/work-detail?workPostId=${row.getValue("postId")}`}
+          className=" hover:cursor-pointer text-center"
+        >
+          <EyeIcon size={22} className="hover:fill-green-500" />
+        </Link>
+      );
     },
   },
 ];

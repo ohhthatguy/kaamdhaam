@@ -44,6 +44,7 @@ async function getData(): Promise<consumerApplicationDataType[] | undefined> {
         status: e.postId.status,
         dateApplied: e.postId.createdAt,
         expectedTime: e.postId.expectedTime,
+        postId: e.postId._id.toString(),
       };
       finalTableData.push(data);
     });
