@@ -96,6 +96,7 @@ const EmployerDetail = async ({
           <ImIntrestedComponent
             id={postDetail._id.toString()}
             userData={userData}
+            jobProviderId={postDetail.createdBy._id.toString()}
           />
         )}
 

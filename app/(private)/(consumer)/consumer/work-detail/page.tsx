@@ -30,7 +30,7 @@ const page = async ({
 
   const postDetail: workPostDataType & DbTypes =
     (await getWorkPostDetail()) as workPostDataType & DbTypes;
-  console.log(postDetail);
+  console.log(postDetail.createdBy._id.toString());
 
   const breadCrumbData: breadCrumbDataType[] = [
     {

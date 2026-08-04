@@ -6,11 +6,11 @@ const OfferSchema = new mongoose.Schema({
     ref: "WorkPost",
     required: true,
   },
-  // jobProviderId: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: "User",
-  //   required: true,
-  // },
+  jobProviderId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
+  },
   postStatus: {
     type: String,
     enum: ["ACTIVE", "PENDING", "ENDED"],

@@ -12,6 +12,7 @@ type CurrentUserData = {
 
 type offerModelDataType = {
   postId: string;
+  jobProviderId: string;
   intrestedWorkers: [
     {
       workerName: string;
@@ -27,9 +28,11 @@ type offerModelDataType = {
 const ImIntrestedComponent = ({
   id,
   userData,
+  jobProviderId,
 }: {
   id: string;
   userData: CurrentUserData | undefined;
+  jobProviderId: string;
 }) => {
   const [isOffered, setIsOffered] = useState<boolean>(false);
 
@@ -44,6 +47,7 @@ const ImIntrestedComponent = ({
       }
       const offerData: offerModelDataType = {
         postId: id,
+        jobProviderId: jobProviderId,
         intrestedWorkers: [
           {
             workerName: userData?.name,
