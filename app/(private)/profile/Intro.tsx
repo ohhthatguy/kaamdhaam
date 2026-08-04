@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 // import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
+import type { skillOptionDataType } from "@/app/(public)/(auth)/signup/(forms)/type";
 import UserModel from "@/lib/model/auth/UserModel";
 import Image from "next/image";
 
@@ -47,7 +48,7 @@ const Intro = async ({ workerId }: { workerId: string }) => {
         {/* <div className="flex  flex-col"> */}
         {/* <p className="text-xs">Skills</p> */}
         <div className="flex gap-4 flex-wrap">
-          {skillsAndBio.skills.map((e, index: number) => (
+          {skillsAndBio.skills.map((e: skillOptionDataType, index: number) => (
             <p key={index} className="px-2 py-1 text-xs bg-gray-300 rounded-md">
               {e.label}
             </p>

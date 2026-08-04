@@ -1,11 +1,15 @@
 import dbConnect from "@/lib/dbConnect";
 import OfferModel from "@/lib/model/offer/OfferModel";
 import WorkPostModel from "@/lib/model/work/WorkPostModel";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (req: NextRequest) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     await dbConnect();
+
     const data = await req.json();
     const res = await OfferModel.findOneAndUpdate(
       {
@@ -19,7 +23,7 @@ export const PUT = async (req: NextRequest) => {
           "intrestedWorkers.$.dateOfWorkAssociation": new Date(),
         },
       },
-      { returnDocument: "after" },
+      { returnDocument: "after", session },
     );
 
     const res2 = await WorkPostModel.findOneAndUpdate(
@@ -31,9 +35,9 @@ export const PUT = async (req: NextRequest) => {
           status: "ACTIVE",
         },
       },
-      { returnDocument: "after" },
+      { returnDocument: "after", session },
     );
-
+    await session.commitTransaction();
     console.log("Offer Associated: ", res);
     console.log("Updated workpostmodel: ", res2);
 
@@ -47,6 +51,7 @@ export const PUT = async (req: NextRequest) => {
       data: res,
     });
   } catch (err) {
+    await session.abortTransaction();
     console.log("ERROR AT /api/producer/handle-offer", err);
     return NextResponse.json(
       {
@@ -55,5 +60,8 @@ export const PUT = async (req: NextRequest) => {
       },
       { status: 500 },
     );
+  } finally {
+    // 4. Always end the session
+    session.endSession();
   }
 };

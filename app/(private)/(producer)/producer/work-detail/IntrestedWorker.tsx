@@ -27,7 +27,10 @@ const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
       await dbConnect();
       const postDetail = await OfferModel.findOne({ postId: workPostId });
 
-      if (postDetail.postStatus === "ACTIVE") {
+      if (
+        postDetail.postStatus === "ACTIVE" ||
+        postDetail.postStatus === "ENDED"
+      ) {
         const assignedWorkerData: offerModelDataType = {
           ...postDetail,
           intrestedWorkers: postDetail.intrestedWorkers.filter(
