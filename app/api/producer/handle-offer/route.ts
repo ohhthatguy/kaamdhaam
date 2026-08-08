@@ -1,3 +1,4 @@
+import type { dataToRouteHandleOfferDateType } from "@/app/(private)/(producer)/producer/work-detail/DecisionBtn";
 import dbConnect from "@/lib/dbConnect";
 import OfferModel from "@/lib/model/offer/OfferModel";
 import WorkPostModel from "@/lib/model/work/WorkPostModel";
@@ -6,22 +7,43 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (req: NextRequest) => {
   const session = await mongoose.startSession();
+
+  const setData = {
+    inOfferModel: {
+      workAssigned: {
+        postStatus: "ACTIVE",
+        "intrestedWorkers.$.isWorkAssociated": true,
+        "intrestedWorkers.$.dateOfWorkAssociation": new Date(),
+      },
+
+      workEnded: {
+        postStatus: "ENDED",
+        "intrestedWorkers.$.dateOfWorkEnded": new Date(),
+      },
+      afterWorkEnded: {
+        postStatus: "ENDED",
+      },
+    },
+  };
+
   session.startTransaction();
   try {
     await dbConnect();
 
-    const data = await req.json();
+    const data = (await req.json()) as dataToRouteHandleOfferDateType;
+    const action = data.action;
     const res = await OfferModel.findOneAndUpdate(
       {
         postId: data.postId,
         "intrestedWorkers.workerId": data.workerId,
       },
       {
-        $set: {
-          postStatus: "ACTIVE",
-          "intrestedWorkers.$.isWorkAssociated": true,
-          "intrestedWorkers.$.dateOfWorkAssociation": new Date(),
-        },
+        // $set: {
+        //   postStatus: "ACTIVE",
+        //   "intrestedWorkers.$.isWorkAssociated": true,
+        //   "intrestedWorkers.$.dateOfWorkAssociation": new Date(),
+        // },
+        $set: setData.inOfferModel[action],
       },
       { returnDocument: "after", session },
     );
@@ -32,7 +54,7 @@ export const PUT = async (req: NextRequest) => {
       },
       {
         $set: {
-          status: "ACTIVE",
+          status: action === "workAssigned" ? "ACTIVE" : "ENDED",
         },
       },
       { returnDocument: "after", session },

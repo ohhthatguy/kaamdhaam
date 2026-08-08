@@ -1,7 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import { getCurrentUserData } from "@/lib/hooks/getCurrentUserData";
 import OfferModel from "@/lib/model/offer/OfferModel";
-import { EyeIcon } from "lucide-react";
 import Link from "next/link";
 import { ImSad } from "react-icons/im";
 import type { producerJobManagementDataType } from "./Table/column";
@@ -60,39 +59,27 @@ const RequestDetail = async () => {
     }
   };
 
-  //   const getRenderTableData = (data:offerDataType[]) => {
-  // let dataForRenderTable = [];
-
-  //     data.intrestedWorkers.map((e:intrestedWorkerDataType) => {
-  //       const temp = {
-  //         applicant: e.workerName,
-  //         rating: "99",
-  //   postId: data.postId,
-  //   status: e.isWorkAssociated,
-  //   dateApplied: e?.offerMadeAt;
-  //       }
-
-  //       dataForRenderTable.push(temp);
-  //     })
-  //   }
-
-  const getRenderTableData = (data: offerDataType[]) => {
+  const getRenderTableData = (data: offerDataType[], postId: string) => {
     const dataForRenderTable: producerJobManagementDataType[] = [];
-
+    console.log("postId: ", postId);
     data.forEach((offer) => {
-      offer.intrestedWorkers.forEach((e: intrestedWorkerDataType) => {
-        const temp = {
-          applicant: e.workerName,
-          rating: "99",
-          workerId: e.workerId.toString(),
-          status: e.isWorkAssociated,
-          dateApplied: e.offerMadeAt ? e.offerMadeAt : "undefineD",
-        };
+      if (offer.postId._id.toString() === postId) {
+        console.log("map map: ", offer.postId._id.toString());
+        offer.intrestedWorkers.forEach((e: intrestedWorkerDataType) => {
+          const temp = {
+            applicant: e.workerName,
+            rating: "99",
+            workerId: e.workerId.toString(),
+            status: e.isWorkAssociated,
+            dateApplied: e.offerMadeAt ? e.offerMadeAt : "undefineD",
+          };
 
-        dataForRenderTable.push(temp);
-      });
+          dataForRenderTable.push(temp);
+        });
+      }
+
+      console.log("data to give to rendertable: ", dataForRenderTable);
     });
-
     return dataForRenderTable;
   };
 
@@ -121,12 +108,12 @@ const RequestDetail = async () => {
     <section>
       <section className="   flex gap-4 justify-between ">
         <div className="flex-1 rounded-md bg-surface border border-border  p-8">
-          <div>Total Job Post Made: </div>
+          <div>Total Ongoing Work: </div>
           <h4 className="text-right">{data.length}</h4>
         </div>
 
         <div className="flex-1 rounded-md bg-surface border border-border  p-8">
-          <div>Total Applicants: </div>
+          <div>Total Applications: </div>
           <h4 className="text-right">{getTotalWorkerCount(data)}</h4>
         </div>
 
@@ -136,7 +123,7 @@ const RequestDetail = async () => {
         </div>
       </section>
 
-      <section className="mt-2">
+      <section className="mt-4 flex flex-col gap-4">
         {data && data.length > 0 ? (
           data.map((e: offerDataType, index: number) => {
             const createdAtDate = new Date(e.postId.createdAt)
@@ -150,7 +137,7 @@ const RequestDetail = async () => {
             };
             return (
               <div
-                className="rounded-md flex flex-col p-4  gap-2 border border-gray-500"
+                className="rounded-md flex flex-col p-4 bg-surface  gap-2 "
                 key={index}
               >
                 <div className="flex gap-4">
@@ -161,7 +148,12 @@ const RequestDetail = async () => {
 
                   <div className="flex justify-between items-center w-full">
                     <div className="tracking-tight leading-tight ">
-                      <h4>{e.postId.title}</h4>
+                      <Link
+                        className="hover:underline hover:cursor-pointer text-xl"
+                        href={`/producer/work-detail?workPostId=${e.postId._id.toString()}`}
+                      >
+                        {e.postId.title}
+                      </Link>
                       <p>posted on {createdAtDate}</p>
                     </div>
 
@@ -171,18 +163,20 @@ const RequestDetail = async () => {
                       >
                         {e.postId.status}
                       </div>
-                      <Link
-                        href={`/producer/work-detail?workPostId=${e.postId._id.toString()}`}
+                      {/* <Link
+                       
                         className=" hover:cursor-pointer text-center"
                       >
                         <EyeIcon size={22} className="hover:fill-green-500" />
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                 </div>
 
-                <div>
-                  <Rendertable data={getRenderTableData(data)} />
+                <div className="mt-4">
+                  <Rendertable
+                    data={getRenderTableData(data, e.postId._id.toString())}
+                  />
                 </div>
               </div>
             );

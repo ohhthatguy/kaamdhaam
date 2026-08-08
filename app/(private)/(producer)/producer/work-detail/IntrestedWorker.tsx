@@ -91,6 +91,7 @@ const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
                 isWorkAssociated={e.isWorkAssociated}
                 id={workPostId}
                 workerId={e.workerId.toString()}
+                postStatus={workers.postStatus}
               />
             </div>
           </div>

@@ -95,7 +95,7 @@ export default async function Rendertable() {
       <div className="h-92 bg-surface flex flex-col gap-4 justify-center items-center">
         <ImSad size={72} className="text-gray-400/75" />
 
-        <div className="text-md px-4 line-clamp-4">No More Data Found!</div>
+        <div className="text-md px-4 line-clamp-4">No current Data Found!</div>
       </div>
     );
   }

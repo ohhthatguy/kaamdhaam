@@ -30,6 +30,9 @@ const OfferSchema = new mongoose.Schema({
       dateOfWorkAssociation: {
         type: Date,
       },
+      dateOfWorkEnded: {
+        type: Date,
+      },
       dateOfWorkDeclined: {
         type: Date,
       },

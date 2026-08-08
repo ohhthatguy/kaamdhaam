@@ -62,23 +62,23 @@ const Intro = async () => {
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total Application Sent: </div>
           <h4 className="text-right">
-            {data ? data.PENDING + data.ACTIVE + data.ENDED : undefined}
+            {data ? data.PENDING + data.ACTIVE + data.ENDED : 0}
           </h4>
         </div>
 
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total PENDING: </div>
-          <h4 className="text-right">{data ? data.PENDING : undefined}</h4>
+          <h4 className="text-right">{data ? data.PENDING : 0}</h4>
         </div>
 
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total ACTIVE </div>
-          <h4 className="text-right">{data ? data.ACTIVE : undefined}</h4>
+          <h4 className="text-right">{data ? data.ACTIVE : 0}</h4>
         </div>
 
         <div className="rounded-md bg-surface border border-border  p-8">
           <div>Total ENDED: </div>
-          <h4 className="text-right">{data ? data.ENDED : undefined}</h4>
+          <h4 className="text-right">{data ? data.ENDED : 0}</h4>
         </div>
       </section>
 

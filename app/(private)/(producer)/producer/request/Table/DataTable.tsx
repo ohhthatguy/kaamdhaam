@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* table  */}
-      <div className="overflow-hidden  rounded-md  border-b border-gray-500 ">
+      <div className="overflow-hidden  rounded-md  ">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -94,6 +94,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  className="bg-light"
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
