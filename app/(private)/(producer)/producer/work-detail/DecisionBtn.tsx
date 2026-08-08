@@ -21,6 +21,7 @@ const DecisionBtn = ({
 }) => {
   // const [isOffered, setIsOffered] = useState<boolean>(false);
 
+  console.log("POST STTAUTS: ", postStatus);
   const handleDecision = async () => {
     console.log("PostID: ", id);
 
@@ -70,7 +71,7 @@ const DecisionBtn = ({
         // disabled={isWorkAssociated || isOffered}
         // {isWorkAssociated || isOffered ? "bg-gray-700/40" : "bg-green-800/85"}
         disabled={postStatus === "ENDED"}
-        className={`border border-border px-4 py-2 rounded-md text-white hover:cursor-pointer ${postStatus === "PENDING" ? "bg-green-800/85" : postStatus === "ACTIVE" ? "bg-amber-400/40" : "bg-gray-700/40"} `}
+        className={`border border-border px-4 py-2 rounded-md text-white hover:cursor-pointer ${postStatus === "PENDING" ? "bg-green-800/85" : postStatus === "ACTIVE" ? "bg-orange-700/80" : "bg-gray-700/40"} `}
       >
         {postStatus === "PENDING"
           ? "ACCEPT OFFER"

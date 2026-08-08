@@ -11,7 +11,10 @@ const Page = async () => {
   const getPostedWorks = async () => {
     try {
       await dbConnect();
-      const workData = await WorkPostModel.find({ createdBy: user?.id }).sort({
+
+      const workData = await WorkPostModel.find({
+        createdBy: user?.id,
+      }).sort({
         createdAt: -1,
       });
 
@@ -56,6 +59,12 @@ const Page = async () => {
               <div className="">
                 <div className="flex flex-col gap-2">
                   <div>
+                    {e.status === "ENDED" && (
+                      <span className="px-2 py-1 rounded-md border bg-gray-700/40 text-white">
+                        {" "}
+                        TASK ENDED
+                      </span>
+                    )}
                     <span className="px-2 py-1 rounded-md border bg-green-800 text-white">
                       {" "}
                       {e.category[0].label}

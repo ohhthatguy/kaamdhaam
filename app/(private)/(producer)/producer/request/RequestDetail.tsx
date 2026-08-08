@@ -15,6 +15,7 @@ type intrestedWorkerDataType = {
   offerMadeAt?: string;
   dateOfWorkAssociation?: string;
   dateOfWorkDeclined?: string;
+  dateOfWorkEnded?: string;
 };
 
 type PostDetailDataType = {
@@ -72,6 +73,9 @@ const RequestDetail = async () => {
             workerId: e.workerId.toString(),
             status: e.isWorkAssociated,
             dateApplied: e.offerMadeAt ? e.offerMadeAt : "undefineD",
+            dateOfWorkEnded: e.dateOfWorkEnded
+              ? e.dateOfWorkEnded
+              : "undefineD",
           };
 
           dataForRenderTable.push(temp);
@@ -101,6 +105,15 @@ const RequestDetail = async () => {
     return count;
   };
 
+  const getTotalOngoingWorkCount = (data: offerDataType[]) => {
+    let count = 0;
+    data.map((e: offerDataType) => {
+      if (e.postStatus === "ACTIVE" || e.postStatus === "PENDING") count++;
+    });
+
+    return count;
+  };
+
   const data = await getDetailOfJobPostedByProvider();
   console.log("FINAL DATA: ", data);
 
@@ -109,7 +122,7 @@ const RequestDetail = async () => {
       <section className="   flex gap-4 justify-between ">
         <div className="flex-1 rounded-md bg-surface border border-border  p-8">
           <div>Total Ongoing Work: </div>
-          <h4 className="text-right">{data.length}</h4>
+          <h4 className="text-right">{getTotalOngoingWorkCount(data)}</h4>
         </div>
 
         <div className="flex-1 rounded-md bg-surface border border-border  p-8">

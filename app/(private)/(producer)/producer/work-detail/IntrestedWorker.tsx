@@ -25,7 +25,9 @@ const IntrestedWorker = async ({ workPostId }: { workPostId: string }) => {
   const getWorkPostDetail = async () => {
     try {
       await dbConnect();
-      const postDetail = await OfferModel.findOne({ postId: workPostId });
+      const postDetail = await OfferModel.findOne({
+        postId: workPostId,
+      }).lean();
 
       if (
         postDetail.postStatus === "ACTIVE" ||

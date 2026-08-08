@@ -15,6 +15,8 @@ const EmployerDetail = async ({
   postDetail: workPostDataType & DbTypes;
 }) => {
   console.log("POST DETAIL IN consumer SIDE: ", postDetail._id);
+  console.log("POST DETAIL IN consumer SIDE: ", postDetail);
+
   const userData = await getCurrentUserData();
 
   const getPostedWorks = async (): Promise<
@@ -41,15 +43,14 @@ const EmployerDetail = async ({
     try {
       await dbConnect();
 
-      const offerWorker = await OfferModel.countDocuments({
+      const workerExists = await OfferModel.exists({
         postId: postDetail._id,
+        "intrestedWorkers.workerId": userData?.id,
       });
-      console.log("OFFER: ", offerWorker);
-      if (offerWorker) {
-        return true;
-      } else {
-        return false;
-      }
+
+      console.log("isworkerExists: ", workerExists);
+
+      return workerExists;
     } catch (err) {
       console.log("Error in checkIfAlreadyOfferSubmitted(): ", err);
     }

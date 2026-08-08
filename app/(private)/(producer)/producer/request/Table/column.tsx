@@ -13,6 +13,7 @@ export type producerJobManagementDataType = {
   workerId: string;
   status: boolean;
   dateApplied: string;
+  dateOfWorkEnded: string;
 };
 
 export const columns: ColumnDef<producerJobManagementDataType>[] = [
@@ -70,13 +71,21 @@ export const columns: ColumnDef<producerJobManagementDataType>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
+      console.log(row);
       const statusStr = row.getValue("status") as boolean;
+      const dateEnded = row.original.dateOfWorkEnded;
+
+      console.log("INSIDE STTATUS: ", dateEnded);
 
       return (
         <div
-          className={`${statusStr ? "bg-green-400 p-1 rounded-md text-center" : "bg-yellow-400 p-1 rounded-md text-center"}`}
+          className={`${dateEnded && dateEnded !== "undefineD" ? "bg-gray-800/40 p-1 rounded-md text-center" : statusStr ? "bg-green-400 p-1 rounded-md text-center" : "bg-yellow-400 p-1 rounded-md text-center"}`}
         >
-          {statusStr ? "Work Assigned" : "Pending"}
+          {dateEnded && dateEnded !== "undefineD"
+            ? "Work Ended"
+            : statusStr
+              ? "Work Assigned"
+              : "Pending"}
         </div>
       );
     },

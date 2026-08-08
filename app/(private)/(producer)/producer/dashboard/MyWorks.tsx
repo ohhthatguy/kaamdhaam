@@ -12,7 +12,10 @@ const MyWorks = async () => {
   const getPostedWorks = async () => {
     try {
       await dbConnect();
-      const workData = await WorkPostModel.find({ createdBy: user?.id })
+      const workData = await WorkPostModel.find({
+        createdBy: user?.id,
+        status: { $ne: "ENDED" },
+      })
         .sort({ createdAt: -1 })
         .limit(2);
       console.log("WORKDATA: ", workData);
